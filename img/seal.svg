@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="wax" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" style="stop-color:#d44040"/>
+      <stop offset="50%" style="stop-color:#a82020"/>
+      <stop offset="100%" style="stop-color:#6b1515"/>
+    </radialGradient>
+    <radialGradient id="waxHighlight" cx="35%" cy="30%" r="30%">
+      <stop offset="0%" style="stop-color:#e86060" stop-opacity="0.6"/>
+      <stop offset="100%" style="stop-color:#a82020" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Wax blob (irregular shape) -->
+  <path d="M60 8 C85 5, 105 20, 112 45 C118 70, 108 95, 85 108 C65 118, 35 115, 18 95 C5 78, 8 45, 25 22 C38 10, 48 10, 60 8Z" fill="url(#wax)"/>
+  <path d="M60 8 C85 5, 105 20, 112 45 C118 70, 108 95, 85 108 C65 118, 35 115, 18 95 C5 78, 8 45, 25 22 C38 10, 48 10, 60 8Z" fill="url(#waxHighlight)"/>
+  <!-- Inner ring -->
+  <circle cx="60" cy="58" r="32" fill="none" stroke="#8b1a1a" stroke-width="1.5" opacity="0.5"/>
+  <circle cx="60" cy="58" r="28" fill="none" stroke="#6b1515" stroke-width="0.8" opacity="0.4"/>
+  <!-- Heart monogram -->
+  <path d="M60 72 C60 72, 42 58, 42 48 C42 40, 48 36, 54 38 C57 36, 60 38, 60 38 C60 38, 63 36, 66 38 C72 36, 78 40, 78 48 C78 58, 60 72, 60 72Z" fill="#6b1515" opacity="0.7"/>
+  <!-- Drip details -->
+  <ellipse cx="30" cy="90" rx="6" ry="8" fill="#8b1a1a" opacity="0.6"/>
+  <ellipse cx="95" cy="85" rx="5" ry="7" fill="#8b1a1a" opacity="0.5"/>
+  <ellipse cx="55" cy="105" rx="4" ry="5" fill="#6b1515" opacity="0.4"/>
+</svg>
