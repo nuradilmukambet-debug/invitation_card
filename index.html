@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на свадьбу — … &amp; Бегимай</title>
+    <meta name="description" content="Вы приглашены на нашу свадьбу! Откройте письмо, чтобы узнать подробности.">
+
+    <!-- Open Graph для WhatsApp / Telegram -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Приглашение на свадьбу — … &amp; Бегимай">
+    <meta property="og:description" content="Откройте старинное письмо и узнайте, когда и где мы будем праздновать нашу любовь.">
+    <meta property="og:image" content="img/letter.svg">
+    <meta property="og:locale" content="ru_RU">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Экран с запечатанным письмом -->
+    <div id="overlay">
+        <div class="letter-container">
+            <div class="letter-wrapper">
+                <div class="letter-glow"></div>
+                <img src="img/letter.svg" alt="Свиток с приглашением">
+                <button id="seal-button" onclick="openInvitation()" aria-label="Открыть приглашение">
+                    <img src="img/seal.svg" alt="Восковая печать">
+                </button>
+                <div class="seal-particles"></div>
+            </div>
+            <p class="hint-text">Нажмите на печать, чтобы прочитать</p>
+        </div>
+    </div>
+
+    <!-- Основное содержимое -->
+    <main id="main-content" class="hidden">
+
+        <header class="hero">
+            <p class="hero-ornament">✦</p>
+            <p class="hero-subtitle">Приглашение на свадьбу</p>
+            <h1 class="hero-names">
+                <span class="name-placeholder">…</span>
+                <span class="amp">&amp;</span>
+                Бегимай
+            </h1>
+            <p class="hero-date">
+                15 августа 2026
+                <span>Бишкек</span>
+            </p>
+            <div class="scroll-indicator"><span></span></div>
+        </header>
+
+        <section class="invitation">
+            <div class="section-divider"><span>♥</span></div>
+            <h2>Дорогие гости!</h2>
+            <p class="section-text">
+                С огромной радостью приглашаем вас разделить с нами один из самых
+                важных дней в нашей жизни. Ваше присутствие сделает наш праздник
+                по-настоящему незабываемым. Мы долго ждали этого момента и хотим
+                отметить его в окружении самых близких и дорогих людей.
+            </p>
+        </section>
+
+        <section class="timeline">
+            <div class="section-divider"><span>✦</span></div>
+            <h2>Программа дня</h2>
+            <ul class="timeline-list">
+                <li>
+                    <span class="timeline-time">14:00</span>
+                    <div class="timeline-event">
+                        <strong>Церемония</strong>
+                        Торжественная регистрация брака
+                    </div>
+                </li>
+                <li>
+                    <span class="timeline-time">16:00</span>
+                    <div class="timeline-event">
+                        <strong>Фотосессия</strong>
+                        Совместные фото с гостями
+                    </div>
+                </li>
+                <li>
+                    <span class="timeline-time">18:00</span>
+                    <div class="timeline-event">
+                        <strong>Банкет</strong>
+                        Праздничный ужин, тосты и танцы
+                    </div>
+                </li>
+                <li>
+                    <span class="timeline-time">22:00</span>
+                    <div class="timeline-event">
+                        <strong>Финал</strong>
+                        Завершение вечера
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="location">
+            <div class="section-divider"><span>♥</span></div>
+            <h2>Место проведения</h2>
+            <div class="location-card">
+                <p class="location-name">Ресторан «Ала-Тоо»</p>
+                <p class="location-address">
+                    г. Бишкек, ул. Чуй 120<br>
+                    Банкетный зал «Золотой зал»
+                </p>
+                <a class="btn-map" href="https://maps.google.com" target="_blank" rel="noopener">Открыть на карте</a>
+            </div>
+        </section>
+
+        <section class="dress-code">
+            <div class="section-divider"><span>✦</span></div>
+            <h2>Дресс-код</h2>
+            <p class="section-text">
+                Мы будем рады, если вы поддержите элегантный стиль вечера.
+                Просим воздержаться от белого — этот цвет зарезервирован за Бегимай.
+            </p>
+            <div class="dress-colors">
+                <span class="color-dot" style="background:#6b2d3c" title="Бордовый"></span>
+                <span class="color-dot" style="background:#c9a962" title="Золотой"></span>
+                <span class="color-dot" style="background:#2c4a3e" title="Изумрудный"></span>
+                <span class="color-dot" style="background:#3d2c2c" title="Тёмный"></span>
+            </div>
+        </section>
+
+        <section class="rsvp">
+            <div class="section-divider"><span>♥</span></div>
+            <h2>Подтвердите присутствие</h2>
+            <p class="section-text">
+                Пожалуйста, напишите нам в WhatsApp до 1 августа 2026 года —
+                сможете ли вы разделить с нами этот день.
+            </p>
+            <!-- Замените 996700000000 на номер Бегимай (только цифры, без + и пробелов) -->
+            <a
+                class="btn-whatsapp"
+                href="https://wa.me/996700000000?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%B4%D1%82%D0%B2%D0%B5%D1%80%D0%B4%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%B8%D1%81%D1%83%D1%82%D1%81%D1%82%D0%B2%D0%B8%D0%B5%20%D0%BD%D0%B0%20%D1%81%D0%B2%D0%B0%D0%B4%D1%8C%D0%B1%D0%B5."
+                target="_blank"
+                rel="noopener"
+            >
+                Написать в WhatsApp
+            </a>
+        </section>
+
+        <footer>
+            С любовью, … &amp; Бегимай <span class="heart">♥</span>
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
