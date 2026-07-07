@@ -225,7 +225,7 @@ body {
   /* ИЗМЕНИТЕ ЗДЕСЬ: было 35vh.
      Поставьте 45vh или 50vh, чтобы опустить надпись ещё ниже к центру.
      Чем больше число, тем ниже опустится текст. */
-  padding-top: 48vh; 
+  padding-top: 50vh; 
 }
 .hero-ornament {
   font-family: var(--font-display);
