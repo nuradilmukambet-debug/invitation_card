@@ -14,18 +14,13 @@
 }
 
 /* ===== Reset & Base ===== */
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
+html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
   background: var(--cream);
@@ -33,14 +28,9 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
+.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-/* ===== Overlay / Letter Screen ===== */
+/* ===== Overlay / Адаптивный экран конверта ===== */
 #overlay {
   position: fixed;
   inset: 0;
@@ -49,9 +39,8 @@ body {
   align-items: center;
   justify-content: center;
   background: radial-gradient(ellipse at center, #2a1520 0%, #1a0a10 60%, #0d0508 100%);
-  transition: opacity 1s ease, transform 1.2s ease;
+  transition: opacity 1s ease 0.6s, transform 1.2s ease 0.6s;
 }
-
 #overlay.opening {
   opacity: 0;
   transform: scale(1.05);
@@ -62,62 +51,142 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 3vh;
   padding: 1rem;
+  width: 100%;
 }
 
-.letter-wrapper {
+/* Адаптивный контейнер конверта */
+.envelope-wrapper {
   position: relative;
-  width: min(340px, 85vw);
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+  width: min(420px, 85vw);
+  aspect-ratio: 380 / 270;
+  perspective: 1500px; /* Создает 3D-пространство для крышки */
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.5));
 }
 
-.letter-wrapper img {
+/* envelope.png — Нижняя часть конверта (кармашек) */
+.envelope-base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3; /* Лежит поверх вкладыша-письма */
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* envelope_up.png — Верхний треугольный клапан */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: auto;
-  display: block;
+  z-index: 4; /* Изначально закрывает всё собой спереди */
+  transform-origin: top center; /* Сгибается строго по верхней линии */
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  backface-visibility: hidden;
 }
 
+/* АНИМАЦИЯ: Треугольник переворачивается наверх и уходит назад */
+.envelope-wrapper.open-flap .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1; /* Перемещается за письмо, чтобы не перекрывать его сверху */
+}
+
+/* Письмо внутри конверта */
+.envelope-letter {
+  position: absolute;
+  bottom: 4%;
+  left: 5%;
+  width: 90%;
+  height: 85%;
+  background: #ffffff;
+  z-index: 2; /* Спрятано за нижним кармашком */
+  padding: 8% 5%;
+  text-align: center;
+  border-radius: 4px;
+  box-shadow: inset 0 0 20px rgba(201, 169, 98, 0.12);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+}
+
+/* АНИМАЦИЯ: Письмо выезжает из кармашка вертикально вверх */
+.envelope-wrapper.open-letter .envelope-letter {
+  transform: translateY(-55%);
+}
+
+.letter-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 6vw, 2.2rem);
+  color: var(--burgundy-dark);
+  margin-bottom: 0.2rem;
+}
+.letter-subtitle {
+  font-size: clamp(0.55rem, 2vw, 0.75rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* Сургучная печать */
 #seal-button {
   position: absolute;
-  bottom: 18%;
+  top: 36%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 10;
+  z-index: 5; /* На самом переднем плане */
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
 #seal-button img {
   width: clamp(70px, 18vw, 95px);
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+#seal-button.seal-breaking {
+  animation: sealBreak 0.6s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes sealBreak {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.2) rotate(12deg); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; }
+}
+
+/* Частицы сургуча */
+.seal-particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1px;
+  height: 1px;
+}
+.seal-particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+}
+.seal-particle.animate { animation: particleFly 0.6s ease forwards; }
+
+@keyframes particleFly {
+  0% { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
 }
 
 .hint-text {
-  font-size: 0.75rem;
+  font-size: clamp(0.65rem, 2vw, 0.8rem);
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--gold-light);
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
-/* ===== Main Content ===== */
-#main-content {
-  min-height: 100vh;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 1.2s ease 0.3s, transform 1.2s ease 0.3s;
-}
-
-#main-content.visible {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
-  pointer-events: auto;
-}
-
-/* Шапка с фото на весь экран (Hero Section) */
-/* Шапка с фото на весь экран (Hero Section) */
+/* ===== Main Content / Текст сайта ===== */
 .hero {
   position: relative;
   background-image: url('background.png') !important;
@@ -126,36 +195,23 @@ body {
   background-repeat: no-repeat !important;
   min-height: 100vh !important;
   display: flex !important;
-  align-items: flex-start !important; /* Изменили с center на flex-start, чтобы управлять отступом сверху */
+  align-items: flex-start !important;
   justify-content: center !important;
   text-align: center;
 }
-
-/* Затемняющий градиент поверх фото */
 .hero-overlay-dark {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(26, 10, 16, 0.3) 0%,
-    rgba(26, 10, 16, 0.6) 60%,
-    rgba(26, 10, 16, 0.85) 100%
-  );
+  background: linear-gradient(to bottom, rgba(26, 10, 16, 0.3) 0%, rgba(26, 10, 16, 0.6) 60%, rgba(26, 10, 16, 0.85) 100%);
   z-index: 1;
 }
-
-/* Контейнер с текстом — именно здесь мы двигаем блок вниз */
 .hero-content {
   position: relative;
   z-index: 2;
   padding: 0 1rem;
   width: 100%;
-  
-  /* Отступ сверху: 35vh означает 35% от высоты экрана мобильного телефона. 
-     Если захотите опустить еще ниже, сделайте 40vh или 45vh */
-  padding-top: 60vh; 
+  padding-top: 35vh;
 }
-
 .hero-ornament {
   font-family: var(--font-display);
   font-size: 1.8rem;
@@ -163,25 +219,21 @@ body {
   letter-spacing: 0.5em;
   margin-bottom: 0.5rem;
 }
-
-/* Увеличенный и контрастный шрифт Бегимай */
 .hero-names {
   font-family: var(--font-display);
-  font-size: clamp(3.8rem, 14vw, 7.5rem); /* Значительно увеличили размер */
+  font-size: clamp(3.8rem, 14vw, 7.5rem);
   font-weight: 300;
-  color: #ffffff; /* Белый цвет для максимальной читаемости на темном фото */
+  color: #ffffff;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 40px rgba(201, 169, 92, 0.3);
   line-height: 1.1;
   letter-spacing: 0.03em;
   margin-bottom: 0.2rem;
 }
-
 .hero-subtitle {
   font-size: clamp(0.8rem, 3vw, 1.1rem);
   letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: var(--gold-light); /* Золотистый оттенок для подписи */
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  color: var(--gold-light);
 }
 
 .scroll-indicator {
@@ -190,7 +242,6 @@ body {
   left: 50%;
   transform: translateX(-50%);
 }
-
 .scroll-indicator span {
   display: block;
   width: 1px;
@@ -198,33 +249,28 @@ body {
   background: linear-gradient(to bottom, var(--gold-light), transparent);
 }
 
-/* Обертка для нижних блоков: нежный молочный цвет + текстура национального орнамента */
 .content-wrapper-ornament {
-  background-color: #fbf9f4; /* Нежный молочный цвет */
-  background-image: url('ornament-bg.png'); /* Путь к картинке с узором */
+  background-color: #fbf9f4;
+  background-image: url('Gemini_Generated_Image_1hu94s1hu94s1hu9.png');
   background-repeat: repeat;
-  background-size: 1920px auto; /* Размер узора для красивого повторения */
+  background-size: 400px auto;
   position: relative;
   z-index: 5;
 }
-
-/* Дополнительное полупрозрачное наложение, чтобы узор не мешал тексту */
 .content-wrapper-ornament::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(251, 249, 244, 0.88); /* Смягчает текстуру фона */
+  background: rgba(251, 249, 244, 0.9);
   z-index: -1;
 }
 
-/* Секции */
 section {
   padding: 6rem 1.5rem;
   max-width: 720px;
   margin: 0 auto;
   text-align: center;
 }
-
 .section-divider {
   display: flex;
   align-items: center;
@@ -232,16 +278,13 @@ section {
   gap: 1rem;
   margin-bottom: 2rem;
 }
-
-.section-divider::before,
-.section-divider::after {
+.section-divider::before, .section-divider::after {
   content: "";
   flex: 1;
   max-width: 80px;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
-
 .section-divider span {
   font-family: var(--font-display);
   font-size: 1.2rem;
@@ -255,17 +298,14 @@ h2 {
   color: var(--burgundy-dark);
   margin-bottom: 1.8rem;
 }
-
 .section-text {
   font-size: clamp(0.95rem, 2.5vw, 1.05rem);
   line-height: 2;
   color: var(--text);
   max-width: 560px;
   margin: 0 auto;
-  font-weight: 400;
 }
 
-/* Карточка места */
 .location-card {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(201, 169, 98, 0.25);
@@ -275,21 +315,18 @@ h2 {
   box-shadow: 0 15px 35px var(--shadow);
   border-radius: 4px;
 }
-
 .location-name {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 4vw, 1.9rem);
   color: var(--burgundy-dark);
   margin-bottom: 0.7rem;
 }
-
 .location-address {
   font-size: 0.9rem;
   color: var(--text-soft);
   line-height: 1.8;
   margin-bottom: 2rem;
 }
-
 .btn-map {
   display: inline-block;
   padding: 0.85rem 2.5rem;
@@ -299,17 +336,14 @@ h2 {
   text-decoration: none;
   color: var(--burgundy-dark);
   border: 1px solid var(--gold);
-  background: transparent;
   transition: all 0.3s ease;
 }
-
 .btn-map:hover {
   background: var(--burgundy-dark);
   color: #ffffff;
   border-color: var(--burgundy-dark);
 }
 
-/* Кнопка RSVP */
 .btn-whatsapp {
   display: inline-block;
   margin-top: 2rem;
@@ -324,14 +358,12 @@ h2 {
   box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
   transition: all 0.3s ease;
 }
-
 .btn-whatsapp:hover {
   background: #1ebe57;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
 }
 
-/* Подвал */
 footer {
   text-align: center;
   padding: 3rem 1.5rem;
@@ -341,18 +373,26 @@ footer {
   color: var(--text-soft);
   border-top: 1px solid rgba(201, 169, 98, 0.15);
 }
+footer .heart { color: var(--burgundy); }
 
-footer .heart {
-  color: var(--burgundy);
-  display: inline-block;
+.petal {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: rgba(201, 169, 98, 0.3);
+  border-radius: 50% 0 50% 50%;
+  pointer-events: none;
+  z-index: 1;
+  animation: petalFall linear infinite;
+}
+@keyframes petalFall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
 
-/* Адаптивность для телефонов */
 @media (max-width: 480px) {
-  section {
-    padding: 4.5rem 1.25rem;
-  }
-  .location-card {
-    padding: 2rem 1.25rem;
-  }
+  section { padding: 4.5rem 1.25rem; }
+  .location-card { padding: 2rem 1.25rem; }
 }
