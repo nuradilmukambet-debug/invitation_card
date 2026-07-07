@@ -59,9 +59,14 @@ body {
 /* Адаптивный контейнер конверта */
 .envelope-wrapper {
   position: relative;
-  width: min(420px, 85vw);
-  aspect-ratio: 380 / 270;
-  perspective: 1500px; /* Создает 3D-пространство для крышки */
+  
+  /* ИЗМЕНИТЕ ЗДЕСЬ: было min(420px, 85vw), делаем конверт больше */
+  width: min(520px, 90vw); 
+  
+  /* Пропорции (aspect-ratio) и остальные свойства не трогаем, 
+     они автоматически пересчитают высоту под новую ширину! */
+  aspect-ratio: 380 / 270; 
+  perspective: 1500px;
   filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.5));
 }
 
